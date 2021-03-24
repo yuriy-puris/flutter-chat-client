@@ -49,6 +49,7 @@ class LoginDialog extends StatelessWidget {
                     ),
                   ),
                   TextFormField(
+                    obscureText: true,
                     validator: (String inValue) {
                       if ( inValue.length == 0 ) {
                         return 'Please enter a password';
@@ -73,33 +74,37 @@ class LoginDialog extends StatelessWidget {
                 onPressed: () {
                   if (_loginFormKey.currentState.validate()) {
                     _loginFormKey.currentState.save();
-                    connector.connectToServer(model.rootBuildContext, () {
-                      connector.validate(
-                        _userName,
-                        _password,
-                        (inStatus) async {
-                          if (inStatus == 'ok') {
-                            model.setUserName(_userName);
-                            Navigator.of(model.rootBuildContext).pop();
-                            model.setGreeting('Welcome back, $_userName');
-                          } else if ( inStatus == 'fail' ) {
-                            Scaffold.of(model.rootBuildContext).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.red,
-                                duration: Duration(seconds: 2),
-                                content: Text('Sorry, that username is already taken')
-                              )
-                            );
-                          } else if ( inStatus == 'created') {
-                            var credentialsFile = File(join(model.docsDir.path, 'credentials'));
-                            await credentialsFile.writeAsString('$_userName============$_password');
-                            model.setUserName(_userName);
-                            Navigator.of(model.rootBuildContext).pop();
-                            model.setGreeting('Welcome to the server, $_userName');
-                          }
-                        }
-                      );
-                    });
+                    
+                    model.setUserName(_userName);
+                    model.setGreeting('Welcome to the server, $_userName');
+                    Navigator.of(model.rootBuildContext).pop();
+                    // connector.connectToServer(model.rootBuildContext, () {
+                    //   connector.validate(
+                    //     _userName,
+                    //     _password,
+                    //     (inStatus) async {
+                    //       if (inStatus == 'ok') {
+                    //         model.setUserName(_userName);
+                    //         Navigator.of(model.rootBuildContext).pop();
+                    //         model.setGreeting('Welcome back, $_userName');
+                    //       } else if ( inStatus == 'fail' ) {
+                    //         Scaffold.of(model.rootBuildContext).showSnackBar(
+                    //           SnackBar(
+                    //             backgroundColor: Colors.red,
+                    //             duration: Duration(seconds: 2),
+                    //             content: Text('Sorry, that username is already taken')
+                    //           )
+                    //         );
+                    //       } else if ( inStatus == 'created') {
+                    //         var credentialsFile = File(join(model.docsDir.path, 'credentials'));
+                    //         await credentialsFile.writeAsString('$_userName============$_password');
+                    //         model.setUserName(_userName);
+                    //         Navigator.of(model.rootBuildContext).pop();
+                    //         model.setGreeting('Welcome to the server, $_userName');
+                    //       }
+                    //     }
+                    //   );
+                    // });
                   }
                 },
               )
@@ -111,40 +116,42 @@ class LoginDialog extends StatelessWidget {
   }
 
   void validateWithStoredCredentials(final String inUserName, final String inPassword) {
-    connector.connectToServer(model.rootBuildContext, () {
-      connector.validate(inUserName, inPassword, (inStatus) {
-        if ( inStatus == 'ok' || inStatus == 'created' ) {
-          model.setUserName(inUserName);
-          model.setGreeting('Welcome back, $inUserName');
-        } else if ( inStatus == 'fail') {
-          showDialog(
-            context: model.rootBuildContext,
-            barrierDismissible: false,
-            builder: (final BuildContext inDialogContext) =>
-              AlertDialog(
-                title: Text('Validation failed'),
-                content: Text(
-                  'It appears that the server has '
-                  'restarted and the username you last used '
-                  'was subsequently taken by someone else.'
-                  '\n\nPlease restart chat and choose '
-                  'a different name.'
-                ),
-                actions: [
-                  FlatButton(
-                    child: Text('Ok'),
-                    onPressed: () {
-                      var credentialsFile = File(join(model.docsDir.path, 'credentials'));
-                      credentialsFile.deleteSync();
-                      exit(0);
-                    },
-                  )
-                ],
-              )
-          );
-        }
-      });
-    });
+    model.setUserName(inUserName);
+    model.setGreeting('Welcome back, $inUserName');
+    // connector.connectToServer(model.rootBuildContext, () {
+    //   connector.validate(inUserName, inPassword, (inStatus) {
+    //     if ( inStatus == 'ok' || inStatus == 'created' ) {
+    //       model.setUserName(inUserName);
+    //       model.setGreeting('Welcome back, $inUserName');
+    //     } else if ( inStatus == 'fail') {
+    //       showDialog(
+    //         context: model.rootBuildContext,
+    //         barrierDismissible: false,
+    //         builder: (final BuildContext inDialogContext) =>
+    //           AlertDialog(
+    //             title: Text('Validation failed'),
+    //             content: Text(
+    //               'It appears that the server has '
+    //               'restarted and the username you last used '
+    //               'was subsequently taken by someone else.'
+    //               '\n\nPlease restart chat and choose '
+    //               'a different name.'
+    //             ),
+    //             actions: [
+    //               FlatButton(
+    //                 child: Text('Ok'),
+    //                 onPressed: () {
+    //                   var credentialsFile = File(join(model.docsDir.path, 'credentials'));
+    //                   credentialsFile.deleteSync();
+    //                   exit(0);
+    //                 },
+    //               )
+    //             ],
+    //           )
+    //       );
+    //     }
+    //   });
+    // });
   }
 
 }

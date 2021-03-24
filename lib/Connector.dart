@@ -146,6 +146,14 @@ void invited(inData) async {
   );
 }
 
+void join(final String inUserName, final String inRoomName, final Function inCallback) {
+
+}
+
+void create(final String inTitle, final String inDescription, int inMaxPeople, bool inPrivate, final String inUserName, final Function inCallback) {
+
+}
+
 void posted(inData) {
   Map<String, dynamic> payload = jsonDecode(inData);
   if ( payload['roomName'] == model.currentRoomName ) {

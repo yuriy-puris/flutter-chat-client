@@ -7,6 +7,8 @@ import 'Model.dart';
 import 'Connector.dart' as connector;
 import 'Home.dart';
 import 'LoginDialog.dart';
+import 'Lobby.dart';
+import 'CreateRoom.dart';
 
 void main() {
   startMeUp() async {
@@ -59,10 +61,10 @@ class FlutterChatMain extends StatelessWidget {
           return MaterialApp(
             initialRoute: '/',
             routes: {
-              // "/Lobby": (screenContext) => Lobby(),
+              "/Lobby": (screenContext) => Lobby(),
               // "/Room": (screenContext) => Room(),
               // "/UserList": (screenContext) => UserList(),
-              // "/CreateRoom": (screenContext) => CreateRoom(),
+              "/CreateRoom": (screenContext) => CreateRoom(),
             },
             home: Home(),
           );
