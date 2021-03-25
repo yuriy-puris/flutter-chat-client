@@ -2,13 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
+// import 'package:socket_io/socket_io.dart';
+// import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_socket_io/socket_io_manager.dart';
 
 import 'Model.dart';
 
-String serverURL = 'http://192.168.9.42';
+String serverURL = 'http://127.0.0.1:3000';
 
 SocketIO _io;
+
+// Socket socket;
+// var io = new Server();
 
 void showPleaseWait() {
   showDialog(
@@ -76,6 +81,13 @@ void connectToServer(final BuildContext inMainBuildContext, final Function inCal
   );
   _io.init();
   _io.connect();
+    // socket = io('http://127.0.0.1:3000', <String, dynamic>{
+    //   'transports': ['websocket'],
+    //   'autoConnect': false,
+    // });
+    
+    // // Connect to websocket
+    // socket.connect();
 }
 
 void newUser(inData) {
@@ -151,6 +163,10 @@ void join(final String inUserName, final String inRoomName, final Function inCal
 }
 
 void create(final String inTitle, final String inDescription, int inMaxPeople, bool inPrivate, final String inUserName, final Function inCallback) {
+
+}
+
+void leave(final String inUserName, final String inRoomName, final Function inCallback) {
 
 }
 
