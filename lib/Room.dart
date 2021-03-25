@@ -20,6 +20,29 @@ class _Room extends State {
   final TextEditingController _postEditingController = TextEditingController();
 
   Widget build(final BuildContext inContext) {
-    
+    return ScopedModel(
+      model: model, 
+      child: ScopedModelDescendant<FlutterChatModel>(
+        builder: (BuildContext inContext, Widget inChild, FlutterChatModel inModel) {
+          return Scaffold(
+            resizeToAvoidBottomPadding: false,
+            appBar: AppBar(
+              title: Text(model.currentRoomName),
+              actions: [
+                PopupMenuButton(
+                  onSelected: (inValue) {
+                    if ( inValue == 'invite' ) {
+                      _inviteOrKick(inContext, 'invite');
+                    } else if ( inValue == 'leave' ) {
+                      connector.leave(model)
+                    }
+                  },
+                )
+              ],
+            ),
+          );
+        }
+      )
+    );
   }
 }
